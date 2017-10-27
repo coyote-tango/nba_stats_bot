@@ -4,8 +4,8 @@ import time
 reddit = praw.Reddit(client_id='HHZ5FFVA72bOFA',
 					 client_secret='d2vtaU2gMLhxZ9x6nfxFtWp-AS0',
 					 user_agent= 'This is a test bot',
-					 username='CoyoteTango_',
-					 password='Bloodline19rd')
+					 username='',
+					 password='')
 
 subreddit = reddit.subreddit('nba')
 keywords= ['stats']
