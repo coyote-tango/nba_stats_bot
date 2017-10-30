@@ -10,8 +10,12 @@ browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 html = browser.page_source
 
 soup = BeautifulSoup(html, 'html.parser')
+players_dict = {}
 
-print([a.text.lower().strip() for a in soup.select(".players-list__names a")])
+for a in soup.select(".players-list__names a"):
+	players_dict[(a.text.lower().strip())] = a['href'].strip('player/').strip('/')
+
+print(players_dict)
 
 # reddit = praw.Reddit(client_id='HHZ5FFVA72bOFA',
 # 					 client_secret='d2vtaU2gMLhxZ9x6nfxFtWp-AS0',
