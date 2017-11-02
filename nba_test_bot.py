@@ -37,15 +37,12 @@ for submission in subreddit.stream.submissions():
 	print(submission.title)
 	for comment in submission.comments.list():
 		comment_content = comment.body.lower().split() #Comment contetn normalized
-		comment_content = ['embiid', 'statsbot']
 		if keyword in comment_content:
 			player_last_name = comment_content[comment_content.index(keyword) - 1]
 
 			player_stats_list = ['MIN', 'PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', '+/-']
 			player_stats = {'MIN': '' , 'PTS': '', 'REB': '', 'AST': '','FG%':'', '3P%':'' , 'FT%':'' , 'STL':'' , 'BLK':'' ,'+/-': ''}
-			player_id = ''
-			
-			
+			player_id = ''		
 			
 			if player_last_name in repeated_last_names:
 					
@@ -63,22 +60,19 @@ for submission in subreddit.stream.submissions():
 					reply_string = reply_string +"Please specify the first name to bring 'em stats."
 					print(reply_string)			
 			else:
-				
-				try:
+
+				if player_last_name not in [item.split()[0] for item in players_dict.keys()]:
+					reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
+									
+				else:
 					player_id = {key.split()[0]:players_dict[key] for key in players_dict.keys()}[player_last_name]
 					
-
 					for key in players_dict.keys():
 						if player_id == players_dict[key]:
 							player_full_name = key
 					
 					display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
-					print(display_name)
-
-				except:
-					reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
-
-
+					
 			if player_id is not '':
 
 				url = 'https://stats.nba.com/player/'+player_id+'/'
@@ -88,11 +82,9 @@ for submission in subreddit.stream.submissions():
 				soup = BeautifulSoup(html, 'html.parser')
 
 				td = soup.select("td.first")[0]
+				time.sleep(1)
 				stats = td.find_next_siblings('td')[1:]
 				stats = [item.text for item in stats]
-
-				print(stats)
-
 				
 				player_stats['MIN'] = stats[1]
 				player_stats['PTS'] = stats[2]
@@ -111,8 +103,8 @@ for submission in subreddit.stream.submissions():
 			 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
 				
 				reply_string  =reply_string + display_stats
-				print(reply_string)
-			comment.reply(reply_string)
+			print(reply_string)
+			# comment.reply(reply_string)
 			time.sleep(600)
 	# GP - 0
 	# MIN - 1
