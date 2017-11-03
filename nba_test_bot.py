@@ -39,7 +39,7 @@ for submission in subreddit.stream.submissions():
 	print(submission.title)
 	for comment in submission.comments.list():
 		comment_content = comment.body.lower().split() #Comment contetn normalized
-		comment_content = ['mozgov', 'statsbot']
+		comment_content = ['felton','statsbot']
 		if keyword in comment_content:
 			player_last_name = comment_content[comment_content.index(keyword) - 1].lower()
 			
@@ -54,7 +54,7 @@ for submission in subreddit.stream.submissions():
 					player_id = players_dict[player_full_name]
 					display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
 				except:
-					
+							
 					reply_string = "I've found more than one player with that last name:\n\n"
 					for item in players_dict.keys():
 						if player_last_name == item.split()[0]:
@@ -87,7 +87,7 @@ for submission in subreddit.stream.submissions():
 				soup = BeautifulSoup(html, 'html.parser')
 				td = soup.select("td.first")[0]
 				print(td.text)						
-				stats = td.find_next_siblings('td')[1:]
+				stats = td.find_next_siblings('td')
 				stats = [item.text for item in stats]
 
 				print(stats)	
@@ -104,7 +104,7 @@ for submission in subreddit.stream.submissions():
 				player_stats['+/-'] = stats[-1]
 
 				display_stats =''
-				reply_string = '***'+ display_name +'***'+ " stats for " +td.text+ "season are the following:\n\n"
+				reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
 				for key in player_stats_list:
 			 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
 				
