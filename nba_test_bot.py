@@ -38,100 +38,104 @@ subreddit = reddit.subreddit('test')
 keyword = 'statsbot'
 sleep_time = None
 
-for submission in subreddit.stream.submissions():
-	submission.comments.replace_more(limit=0)
-	print(submission.title, submission.id)
-	for comment in submission.comments.list():
-		comment_content = comment.body.lower().split() #Comment contetn normalized
-		if keyword in comment_content:
+try:
+	for submission in subreddit.stream.submissions():
+		submission.comments.replace_more(limit=0)
+		print(submission.title, submission.id)
+		for comment in submission.comments.list():
+			comment_content = comment.body.lower().split() #Comment contetn normalized
+			if keyword in comment_content:
 
-			player_stats_list = ['MIN', 'PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', '+/-']
-			player_stats = {'MIN': '' , 'PTS': '', 'REB': '', 'AST': '','FG%':'', '3P%':'' , 'FT%':'' , 'STL':'' , 'BLK':'' ,'+/-': ''}
-			player_id = ''	
-			player_last_name = comment_content[comment_content.index(keyword) - 1].lower().replace('.', '')
+				player_stats_list = ['MIN', 'PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', '+/-']
+				player_stats = {'MIN': '' , 'PTS': '', 'REB': '', 'AST': '','FG%':'', '3P%':'' , 'FT%':'' , 'STL':'' , 'BLK':'' ,'+/-': ''}
+				player_id = ''	
+				player_last_name = comment_content[comment_content.index(keyword) - 1].lower().replace('.', '')
 
-			if player_last_name in b and player_last_name != 'james':
+				if player_last_name in b and player_last_name != 'james':	
+					player_full_name = comment_content[comment_content.index(keyword) - 2].lower() + ' ' +player_last_name+ ' ' + comment_content[comment_content.index(keyword) - 3].lower()
+					display_name = player_full_name.split()[-1].title() +' '+ player_full_name.split()[-2].title() + ' '+ player_full_name.split()[-3].title()
+					try:
+						player_id = players_dict[player_full_name]
+					except:
+						reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
 
-				player_full_name = comment_content[comment_content.index(keyword) - 2].lower() + ' ' +player_last_name+ ' ' + comment_content[comment_content.index(keyword) - 3].lower()
-				display_name = player_full_name.split()[-1].title() +' '+ player_full_name.split()[-2].title() + ' '+ player_full_name.split()[-3].title()
-				try:
-					player_id = players_dict[player_full_name]
-				except:
-					reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
+				elif player_last_name in repeated_last_names:
 
-			elif player_last_name in repeated_last_names:
-
-				player_full_name = player_last_name + ' ' +comment_content[comment_content.index(keyword) - 2].lower()
-				try:		
-					player_id = players_dict[player_full_name]
-					display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
-				except:
-							
-					reply_string = "I've found more than one player with that last name:\n\n"
-					for item in players_dict.keys():
-						if player_last_name == item.split()[0]:
-							reply_string = reply_string +'- ' + item.split()[-1].title() + ' ' + item.split()[0].title() + '\n\n'
-					
-					reply_string = reply_string +"Please specify the first name to bring 'em stats."
-							
-			else:
-
-				if player_last_name not in [item.split()[0] for item in players_dict.keys()]:
-					reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
-									
-				else:
-					player_id = {key.split()[0]:players_dict[key] for key in players_dict.keys()}[player_last_name]
-					
-					for key in players_dict.keys():
-						if player_id == players_dict[key]:
-							player_full_name = key
-					
-					display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
-					
-			if player_id is not '':
-
-				try:
-					load_player_page(10)
-				except:
-					load_player_page(20)
+					player_full_name = player_last_name + ' ' +comment_content[comment_content.index(keyword) - 2].lower()
+					try:		
+						player_id = players_dict[player_full_name]
+						display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
+					except:
+								
+						reply_string = "I've found more than one player with that last name:\n\n"
+						for item in players_dict.keys():
+							if player_last_name == item.split()[0]:
+								reply_string = reply_string +'- ' + item.split()[-1].title() + ' ' + item.split()[0].title() + '\n\n'
 						
-				html = browser.page_source
-				soup = BeautifulSoup(html, 'html.parser')
-				td = soup.select("td.first")[0]
-							
-				stats = td.find_next_siblings('td')
-				stats = [item.text for item in stats]
-				
-				player_stats['MIN'] = stats[1]
-				player_stats['PTS'] = stats[2]
-				player_stats['REB'] = stats[14]
-				player_stats['AST'] = stats[15]	
-				player_stats['FG%'] = stats[5] + '%'
-				player_stats['3P%'] = stats[8] + '%'
-				player_stats['FT%'] = stats[11]+ '%'
-				player_stats['STL'] = stats[17]
-				player_stats['BLK'] = stats[18]
-				player_stats['+/-'] = stats[-1]
+						reply_string = reply_string +"Please specify the first name to bring 'em stats."
+								
+				else:
 
-				display_stats =''
-				reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
-				for key in player_stats_list:
-			 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
-				
-				reply_string  =reply_string + display_stats
-			print(reply_string)
-			comment.reply(reply_string)
-			time.sleep(600)
-	# GP - 0
-	# MIN - 1
-	# PTS - 2''
-	# FG% - 5
-	# 3P% - 8
-	# FT% - 11
-	# REB - 14
-	# AST - 15	
-	# STL - 17	
-	# BLK - 18
+					if player_last_name not in [item.split()[0] for item in players_dict.keys()]:
+						reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
+										
+					else:
+						player_id = {key.split()[0]:players_dict[key] for key in players_dict.keys()}[player_last_name]
+						
+						for key in players_dict.keys():
+							if player_id == players_dict[key]:
+								player_full_name = key
+						
+						display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
+						
+				if player_id is not '':
+
+					try:
+						load_player_page(10)
+					except:
+						load_player_page(20)
+							
+					html = browser.page_source
+					soup = BeautifulSoup(html, 'html.parser')
+					td = soup.select("td.first")[0]
+								
+					stats = td.find_next_siblings('td')
+					stats = [item.text for item in stats]
+					
+					player_stats['MIN'] = stats[1]
+					player_stats['PTS'] = stats[2]
+					player_stats['REB'] = stats[14]
+					player_stats['AST'] = stats[15]	
+					player_stats['FG%'] = stats[5] + '%'
+					player_stats['3P%'] = stats[8] + '%'
+					player_stats['FT%'] = stats[11]+ '%'
+					player_stats['STL'] = stats[17]
+					player_stats['BLK'] = stats[18]
+					player_stats['+/-'] = stats[-1]
+
+					display_stats =''
+					reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
+					for key in player_stats_list:
+				 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
+					
+					reply_string  =reply_string + display_stats
+				print(reply_string)
+				comment.reply(reply_string)
+				time.sleep(600)
+except:
+	continue
+		# GP - 0
+		# MIN - 1
+		# PTS - 2''
+		# FG% - 5
+		# 3P% - 8
+		# FT% - 11
+		# REB - 14
+		# AST - 15	
+		# STL - 17	
+		# BLK - 18
 
 if __name__ == '__main__':
 	main()
+
+
