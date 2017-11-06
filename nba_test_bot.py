@@ -147,7 +147,8 @@ try:
 							logging.warning(ex)
 							logging.info('Retrying...')
 except:
-	continue
+	logging.warning(ex)
+	pass
 		# GP - 0
 		# MIN - 1
 		# PTS - 2''
