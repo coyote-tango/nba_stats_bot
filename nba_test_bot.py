@@ -45,7 +45,7 @@ reddit = praw.Reddit(client_id='2V8J4p3H16ojUg',
 					 username='nba_statsbot',
 					 password='Bloodline19bot')
 
-subreddit = reddit.subreddit('test')
+subreddit = reddit.subreddit('nba')
 keyword = 'statsbot'
 sleep_time = None
 
