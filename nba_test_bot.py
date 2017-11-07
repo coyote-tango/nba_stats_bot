@@ -49,116 +49,120 @@ subreddit = reddit.subreddit('nba')
 keyword = 'statsbot'
 sleep_time = None
 
-for comment in subreddit.stream.comments():
-	while True:
-		try:
-			print(comment.body)
-			comment_content = comment.body.lower().split() #Comment contetn normalized
-			if keyword in comment_content:
-				player_stats_list = ['MIN', 'PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', '+/-']
-				player_stats = {'MIN': '' , 'PTS': '', 'REB': '', 'AST': '','FG%':'', '3P%':'' , 'FT%':'' , 'STL':'' , 'BLK':'' ,'+/-': ''}
-				player_id = ''	
-				player_last_name = comment_content[comment_content.index(keyword) - 1].lower().replace('.', '')
-
-				if player_last_name in b and player_last_name != 'james':
-
-					player_full_name = comment_content[comment_content.index(keyword) - 2].lower() + ' ' +player_last_name+ ' ' + comment_content[comment_content.index(keyword) - 3].lower()
-					display_name = player_full_name.split()[-1].title() +' '+ player_full_name.split()[-2].title() + ' '+ player_full_name.split()[-3].title()
-					try:
-						player_id = players_dict[player_full_name]
-					except:
-						reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
-
-				elif player_last_name in repeated_last_names:
-
-					player_full_name = player_last_name + ' ' +comment_content[comment_content.index(keyword) - 2].lower()
-					try:		
-						player_id = players_dict[player_full_name]
-						display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
-					except:
-								
-						reply_string = "I've found more than one player with that last name:\n\n"
-						for item in players_dict.keys():
-							if player_last_name == item.split()[0]:
-								reply_string = reply_string +'- ' + item.split()[-1].title() + ' ' + item.split()[0].title() + '\n\n'
-						
-						reply_string = reply_string +"Please specify the first name to bring 'em stats."
-								
-				else:
-
-					if player_last_name not in [item.split()[0] for item in players_dict.keys()]:
-						reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
-										
-					else:
-						player_id = {key.split()[0]:players_dict[key] for key in players_dict.keys()}[player_last_name]
-						
-						for key in players_dict.keys():
-							if player_id == players_dict[key]:
-								player_full_name = key
-						
-						display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
-						
-				if player_id is not '':
-
-					try:
-						load_player_page(10)
-					except:
-						load_player_page(20)
-							
-					html = browser.page_source
-					soup = BeautifulSoup(html, 'html.parser')
-					td = soup.select("td.first")[0]
-								
-					stats = td.find_next_siblings('td')
-					stats = [item.text for item in stats]
-					
-					player_stats['MIN'] = stats[1]
-					player_stats['PTS'] = stats[2]
-					player_stats['REB'] = stats[14]
-					player_stats['AST'] = stats[15]	
-					player_stats['FG%'] = stats[5] + '%'
-					player_stats['3P%'] = stats[8] + '%'
-					player_stats['FT%'] = stats[11]+ '%'
-					player_stats['STL'] = stats[17]
-					player_stats['BLK'] = stats[18]
-					player_stats['+/-'] = stats[-1]
-
-					display_stats =''
-					reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
-					for key in player_stats_list:
-				 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
-					
-					reply_string  = reply_string + display_stats
-				
+while  True:
+	try:
+		for comment in subreddit.stream.comments():
+			while True:
 				try:
-					reply(comment, reply_string)
-					break
-				except Exception as e:
-					logging.warning(e)
-					logging.info('Retrying...')
+					print(comment.body)
+					comment_content = comment.body.lower().split() #Comment contetn normalized
+					if keyword in comment_content:
+						player_stats_list = ['MIN', 'PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', '+/-']
+						player_stats = {'MIN': '' , 'PTS': '', 'REB': '', 'AST': '','FG%':'', '3P%':'' , 'FT%':'' , 'STL':'' , 'BLK':'' ,'+/-': ''}
+						player_id = ''	
+						player_last_name = comment_content[comment_content.index(keyword) - 1].lower().replace('.', '')
 
-					if e.error_type == 'RATELIMIT':
-						secs = int(str(e).split()[10]) * 60	
-						time.sleep(secs + 60) 
-						
-					else:
-						flag = False
-						while flag == False:
+						if player_last_name in b and player_last_name != 'james':
+
+							player_full_name = comment_content[comment_content.index(keyword) - 2].lower() + ' ' +player_last_name+ ' ' + comment_content[comment_content.index(keyword) - 3].lower()
+							display_name = player_full_name.split()[-1].title() +' '+ player_full_name.split()[-2].title() + ' '+ player_full_name.split()[-3].title()
 							try:
-								reply(comment, reply_string)
-								flag = True
-								break
-							except Exception as ex:
-								logging.warning(ex)
-								logging.info('Retrying...')
-			else:
-				break
+								player_id = players_dict[player_full_name]
+							except:
+								reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
 
-		except Exception as a:
-			logging.info(a)
-			logging.info('Retrying...')				
+						elif player_last_name in repeated_last_names:
 
+							player_full_name = player_last_name + ' ' +comment_content[comment_content.index(keyword) - 2].lower()
+							try:		
+								player_id = players_dict[player_full_name]
+								display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
+							except:
+										
+								reply_string = "I've found more than one player with that last name:\n\n"
+								for item in players_dict.keys():
+									if player_last_name == item.split()[0]:
+										reply_string = reply_string +'- ' + item.split()[-1].title() + ' ' + item.split()[0].title() + '\n\n'
+								
+								reply_string = reply_string +"Please specify the first name to bring 'em stats."
+										
+						else:
 
+							if player_last_name not in [item.split()[0] for item in players_dict.keys()]:
+								reply_string = "Sorry, I couldn't find that player, make sure there aren't any typos"
+												
+							else:
+								player_id = {key.split()[0]:players_dict[key] for key in players_dict.keys()}[player_last_name]
+								
+								for key in players_dict.keys():
+									if player_id == players_dict[key]:
+										player_full_name = key
+								
+								display_name = player_full_name.split()[-1].title()+ ' ' + player_full_name.split()[0].title()
+								
+						if player_id is not '':
+
+							try:
+								load_player_page(10)
+							except:
+								load_player_page(20)
+									
+							html = browser.page_source
+							soup = BeautifulSoup(html, 'html.parser')
+							td = soup.select("td.first")[0]
+										
+							stats = td.find_next_siblings('td')
+							stats = [item.text for item in stats]
+							
+							player_stats['MIN'] = stats[1]
+							player_stats['PTS'] = stats[2]
+							player_stats['REB'] = stats[14]
+							player_stats['AST'] = stats[15]	
+							player_stats['FG%'] = stats[5] + '%'
+							player_stats['3P%'] = stats[8] + '%'
+							player_stats['FT%'] = stats[11]+ '%'
+							player_stats['STL'] = stats[17]
+							player_stats['BLK'] = stats[18]
+							player_stats['+/-'] = stats[-1]
+
+							display_stats =''
+							reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
+							for key in player_stats_list:
+						 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
+							
+							reply_string  = reply_string + display_stats
+						
+						try:
+							reply(comment, reply_string)
+							break
+						except Exception as e:
+							logging.warning(e)
+							logging.info('Retrying...')
+
+							if e.error_type == 'RATELIMIT':
+								secs = int(str(e).split()[10]) * 60	
+								time.sleep(secs + 60) 
+								
+							else:
+								flag = False
+								while flag == False:
+									try:
+										reply(comment, reply_string)
+										flag = True
+										break
+									except Exception as ex:
+										logging.warning(ex)
+										logging.info('Retrying...')
+					else:
+						break
+
+				except Exception as a:
+					logging.info(a)
+					logging.info('Retrying...')				
+	except Exception as u:
+		logging.info(u)
+		time.sleep(60)
+		pass
 
 # GP - 0
 # MIN - 1
