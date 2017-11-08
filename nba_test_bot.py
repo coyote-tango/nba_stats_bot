@@ -45,7 +45,7 @@ reddit = praw.Reddit(client_id='2V8J4p3H16ojUg',
 					 username='nba_statsbot',
 					 password='Bloodline19bot')
 
-subreddit = reddit.subreddit('nba')
+subreddit = reddit.subreddit('nba+warriors')
 keyword = 'statsbot'
 sleep_time = None
 
@@ -125,6 +125,7 @@ while  True:
 							player_stats['BLK'] = stats[18]
 							player_stats['+/-'] = stats[-1]
 
+							
 							display_stats =''
 							reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
 							for key in player_stats_list:
@@ -142,6 +143,10 @@ while  True:
 							if e.error_type == 'RATELIMIT':
 								secs = int(str(e).split()[10]) * 60	
 								time.sleep(secs + 60) 
+
+							elif e.error_type == 'DELETED_COMMENT':
+								logging.info("Comment deleted, couldn't reply" )
+								pass
 								
 							else:
 								flag = False
