@@ -20,7 +20,7 @@ In order to make call to **nba_statsbot**, you will need to comment the player's
 
 "~~statsbot lebron james~~"   <-- This won't work (X)
 
-_* note that you can put this sentence at any part or you comment, as long as it includes de word **statsbot**, the bot will analyze your comment._
+_* note that you can write this sentence at any part of you comment, as long as it includes the word **statsbot**, the  will analyze your comment._
 
 **nba_statsbot** does not necesaryly necessarily need you to to specify the first name, you can use only the last name:
 
