@@ -21,6 +21,8 @@ In order to summon nba_statsbot, you will need to comment the player's name foll
 
 _* note that you can write this sentence at any stage of you comment, as long as it includes the word **statsbot**,it will analyze your comment._
 
+> "Harden UNREAL stats this season, harden **statsbot**, MVP! "
+
 *nba_statsbot does not necessarily need you to to specify the first name, you can use only the last name:
 
 > "Cousins **statsbot**" 
