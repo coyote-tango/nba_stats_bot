@@ -1,4 +1,4 @@
-# nba_statsbot
+# /u/nba_statsbot
 
 When summoned, nba_statsbot will reply with the player's overall statistcs for the current NBA season (player needs to be active in the ongoing season)
 
@@ -35,6 +35,6 @@ Currently, nba_statsbot will bring the current stats (or last season stats for p
 
 nba_statsbot is under constant improvement and in the future, it will bring more sophisticated stats (past season, historic players, career overalls, advanced, clutch, NASTY etc.).
 
-Feel free to try it yourself, for any questions please send a private message to /u/mambamental.
+Feel free to try it yourself, for any questions please send a private message to /u/mambamental. (you can send a privame message to /u/nba_statsbot, but expect some delay in the response)
 
 
