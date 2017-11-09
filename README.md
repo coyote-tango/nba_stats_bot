@@ -17,15 +17,15 @@ nba_statsbot will provide the following stats:
 
 In order to summon nba_statsbot, you will need to comment the player's name followed by the word **statsbot**, example:
 
-> "_lebron James **statsbot**_" 
+> "_lebron James **statsbot**_"
 
-_* note that you can write this sentence at any stage of you comment, as long as it includes the word **statsbot**,it will analyze your comment._
-
-> "Harden with the UNREAL stats this season boiiiii, MVP! _harden **statsbot**_"
-
-*nba_statsbot does not necessarily need you to to specify the first name, you can use only the last name:
+nba_statsbot does not necessarily need you to to specify the first name, you can use only the last name:
 
 > "_Cousins **statsbot**_" 
+
+Note that you can write this sentence at any stage of you comment, as long as it includes the word **statsbot**,it will analyze your comment:
+
+> "Harden with the UNREAL stats this season boiiiii, MVP! _harden **statsbot**_"
 
 In case there are more players with the same name, you will need to specify the first name, otherwise, nba_statsbot will reply with all of the players with the same last name and will ask you you to specify the first name, you can reply to that comment, this time, specifying the first and last name.
 
@@ -34,3 +34,5 @@ If nba_statsbot cannot find your player, it will let you know so and remind you 
 Currently, nba_statsbot will bring the current stats (or last season stats for players that have not debuted in the 2017-18 season).
 
 nba_statsbot is under constant improvement and in the future, it will bring more sophisticated stats (past season, historic players, career overalls, advanced, clutch, etc.).
+
+
