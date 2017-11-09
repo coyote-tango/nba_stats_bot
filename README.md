@@ -27,7 +27,7 @@ Note that you can write this sentence at any stage of you comment, as long as it
 
 > "Harden with the UNREAL stats this season boiiiii, MVP! _harden **statsbot**_"
 
-In case there are more players with the same name, you will need to specify the first name, otherwise, nba_statsbot will reply with all of the players with the same last name and will ask you you to specify the first name, you can reply to that comment, this time, specifying the first and last name.
+In there are more players with the same last name, you will need to specify the first name, otherwise, nba_statsbot will reply with all of the players with the same last name and will ask you you to specify the first name, you can reply to that comment, this time, specifying the first and last name.
 
 If nba_statsbot cannot find your player, it will let you know so and remind you to check for typos just in case.
 
