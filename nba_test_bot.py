@@ -19,7 +19,7 @@ def reply(comment, reply_string):
 
 
 def load_player_page(secs):
-	url = 'https://stats.nba.com/player/'+player_id+'/traditional/'
+	url = 'https://stats.nba.com/player/'+player_id+'/'
 	browser.get(url)
 	browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 	WebDriverWait(browser, secs).until(EC.presence_of_element_located((By.CLASS_NAME, 'first')))
@@ -40,12 +40,12 @@ repeated_last_names = [item for item in last_names if last_names.count(item) > 1
 
 
 reddit = praw.Reddit(client_id='2V8J4p3H16ojUg',
-					 client_secret='',
+					 client_secret='QU5qL3Ty74n8GwCd2y3PAMjYqNM',
 					 user_agent= 'This is a bot',
-					 username='',
-					 password='')
+					 username='nba_statsbot',
+					 password='Bloodline19bot')
 
-subreddit = reddit.subreddit('nba+warriors')
+subreddit = reddit.subreddit('warriors+sixers+cavs+knicks')
 keyword = 'statsbot'
 sleep_time = None
 
@@ -106,12 +106,13 @@ while  True:
 								load_player_page(10)
 							except:
 								load_player_page(20)
+							
 									
 							html = browser.page_source
 							soup = BeautifulSoup(html, 'html.parser')
 							td = soup.select("td.first")[0]
 										
-							stats = td.find_next_siblings('td')
+							stats = td.find_next_siblings('td')[1:]
 							stats = [item.text for item in stats]
 							
 							player_stats['MIN'] = stats[1]
@@ -129,10 +130,10 @@ while  True:
 							display_stats =''
 							reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
 							for key in player_stats_list:
-						 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'
+						 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + ' '
 							
 							reply_string  = reply_string + display_stats
-						
+							
 						try:
 							reply(comment, reply_string)
 							break
@@ -146,8 +147,7 @@ while  True:
 
 							elif e.error_type == 'DELETED_COMMENT':
 								logging.info("Comment deleted, couldn't reply" )
-								pass
-								
+								break								
 							else:
 								flag = False
 								while flag == False:
