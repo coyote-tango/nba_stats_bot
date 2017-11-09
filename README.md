@@ -23,16 +23,16 @@ nba_statsbot does not necessarily need you to to specify the first name, you can
 
 > "_Cousins **statsbot**_" 
 
+If there are more players with the same last name, you will need to specify the first name, otherwise, nba_statsbot will reply with all of the players with that last name and will ask you you to specify the first name, you can reply to that comment, this time, specifying the first and last name.
+
 Note that you can write this sentence at any stage of you comment, as long as it includes the word **statsbot**,it will analyze your comment:
 
 > "Harden with the UNREAL stats this season boiiiii, MVP! _harden **statsbot**_"
-
-In there are more players with the same last name, you will need to specify the first name, otherwise, nba_statsbot will reply with all of the players with the same last name and will ask you you to specify the first name, you can reply to that comment, this time, specifying the first and last name.
 
 If nba_statsbot cannot find your player, it will let you know so and remind you to check for typos just in case.
 
 Currently, nba_statsbot will bring the current stats (or last season stats for players that have not debuted in the 2017-18 season).
 
-nba_statsbot is under constant improvement and in the future, it will bring more sophisticated stats (past season, historic players, career overalls, advanced, clutch, etc.).
+nba_statsbot is under constant improvement and in the future, it will bring more sophisticated stats (past season, historic players, career overalls, advanced, clutch, NASTY etc.).
 
 
