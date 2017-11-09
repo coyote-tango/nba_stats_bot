@@ -35,4 +35,6 @@ Currently, nba_statsbot will bring the current stats (or last season stats for p
 
 nba_statsbot is under constant improvement and in the future, it will bring more sophisticated stats (past season, historic players, career overalls, advanced, clutch, NASTY etc.).
 
+Feel free to try it yourself, for any questions please send a private message to /u/mambamental.
+
 
