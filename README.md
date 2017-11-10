@@ -13,7 +13,7 @@ nba_statsbot will provide the following stats:
 * FT% - Fiel Throw Percentage
 * STL - Steals per Game
 * BLK - Blocks per Game
-
+&nbsp;
 In order to summon nba_statsbot, you will need to comment the player's name followed by the word **statsbot**, example:
 
 > "_lebron James **statsbot**_"
