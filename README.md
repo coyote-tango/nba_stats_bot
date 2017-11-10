@@ -36,4 +36,11 @@ nba_statsbot is under constant improvement and in the future, it will bring more
 
 Feel free to try it yourself, for any questions please send a private message to /u/mambamental. (you can send a privame message to /u/nba_statsbot, but expect some delay in the response)
 
+*Currently active on: 
 
+- /r/warriors
+- /r/lakers
+- /r/sixers
+- /r/clevelandcavs
+- /r/nyknicks
+- /r/timberwolves
