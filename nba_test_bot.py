@@ -19,7 +19,10 @@ def reply(comment, reply_string):
 
 
 def load_player_page(secs):
-	url = 'https://stats.nba.com/player/'+player_id+'/'
+
+	url = 'https://stats.nba.com/player/'+player_id+'/career/'
+
+
 	browser.get(url)
 	browser.execute_script("window.scrollTo(0, document.body.scrollHeight);")
 	WebDriverWait(browser, secs).until(EC.presence_of_element_located((By.CLASS_NAME, 'first')))
@@ -45,7 +48,11 @@ reddit = praw.Reddit(client_id='2V8J4p3H16ojUg',
 					 username='nba_statsbot',
 					 password='Bloodline19bot')
 
+
+subreddit = reddit.subreddit('warriors+lakers+sixers+cavs+knicks+test')
+
 subreddit = reddit.subreddit('warriors+sixers+cavs+knicks')
+
 keyword = 'statsbot'
 sleep_time = None
 
@@ -57,7 +64,7 @@ while  True:
 					print(comment.body)
 					comment_content = comment.body.lower().split() #Comment contetn normalized
 					if keyword in comment_content:
-						player_stats_list = ['MIN', 'PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', '+/-']
+						player_stats_list = ['PTS', 'REB', 'AST', 'FG%', '3P%', 'FT%', 'STL', 'BLK', 'MIN']
 						player_stats = {'MIN': '' , 'PTS': '', 'REB': '', 'AST': '','FG%':'', '3P%':'' , 'FT%':'' , 'STL':'' , 'BLK':'' ,'+/-': ''}
 						player_id = ''	
 						player_last_name = comment_content[comment_content.index(keyword) - 1].lower().replace('.', '')
@@ -110,28 +117,43 @@ while  True:
 									
 							html = browser.page_source
 							soup = BeautifulSoup(html, 'html.parser')
-							td = soup.select("td.first")[0]
+							td = soup.select("td.player")[0]
 										
-							stats = td.find_next_siblings('td')[1:]
-							stats = [item.text for item in stats]
-							
-							player_stats['MIN'] = stats[1]
-							player_stats['PTS'] = stats[2]
-							player_stats['REB'] = stats[14]
-							player_stats['AST'] = stats[15]	
-							player_stats['FG%'] = stats[5] + '%'
-							player_stats['3P%'] = stats[8] + '%'
-							player_stats['FT%'] = stats[11]+ '%'
-							player_stats['STL'] = stats[17]
-							player_stats['BLK'] = stats[18]
-							player_stats['+/-'] = stats[-1]
 
+							stats = td.find_next_siblings('td')[4:]
+
+							stats = td.find_next_siblings('td')[1:]
+
+							stats = [item.text for item in stats]
+							print(stats)
 							
+							player_stats['MIN'] = stats[0]
+							player_stats['PTS'] = stats[1]
+							player_stats['REB'] = stats[13]
+							player_stats['AST'] = stats[14]	
+							player_stats['FG%'] = stats[4]
+							player_stats['3P%'] = stats[7]
+							player_stats['FT%'] = stats[10]
+							player_stats['STL'] = stats[15]
+							player_stats['BLK'] = stats[16]
+							# player_stats['+/-'] = stats[-1]
+
+							count = 1
 							display_stats =''
-							reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text+ "season are:\n\n"
+							reply_string = '***'+ display_name +'***'+ " overall stats for the " +td.text.strip()+ " season are:\n\n"
 							for key in player_stats_list:
+
+								if len(player_stats[key]) < 4:
+										player_stats[key] = player_stats[key] + '&nbsp;&nbsp;&nbsp;'
+								if count % 3 != 0:
+									display_stats = display_stats + '**'+str(key) + ':** ' +  str(player_stats[key])  + '&nbsp;&nbsp;&nbsp;'
+								else:	
+									display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + '\n\n'	
+								count = count + 1
+
 						 		display_stats = display_stats + '**'+str(key) + ':** ' + str(player_stats[key]) + ' '
 							
+
 							reply_string  = reply_string + display_stats
 							
 						try:
