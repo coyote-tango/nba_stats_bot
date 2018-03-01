@@ -48,8 +48,8 @@ repeated_last_names = [item for item in last_names if last_names.count(item) > 1
 reddit = praw.Reddit(client_id='2V8J4p3H16ojUg',
                      client_secret='QU5qL3Ty74n8GwCd2y3PAMjYqNM',
                      user_agent= 'This is a bot',
-                     username='nba_statsbot',
-                     password='Bloodline19bot')
+                     username='',
+                     password='')
 
 
 # subreddit = reddit.subreddit('warriors+lakers+bostonceltics+sixers+timberwolves+clevelandcavs+nyknicks+fantasybball+test+atlantahawks+botwatch+detroitpistons')
