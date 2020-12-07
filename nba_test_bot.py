@@ -45,8 +45,7 @@ last_names= [key.split()[0] for key in players_dict.keys()]
 repeated_last_names = [item for item in last_names if last_names.count(item) > 1]
 
 
-reddit = praw.Reddit(client_id='2V8J4p3H16ojUg',
-                     client_secret='QU5qL3Ty74n8GwCd2y3PAMjYqNM',
+reddit = praw.Reddit(
                      user_agent= 'This is a bot',
                      username='',
                      password='')
