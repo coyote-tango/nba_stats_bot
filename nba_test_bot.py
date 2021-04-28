@@ -14,7 +14,7 @@ import string
 translator = str.maketrans('', '', string.punctuation)
 
 logging.basicConfig(filename= 'nba_statsbot-log', level=logging.INFO, format='%(asctime)s:%(message)s',
-                    datefmt="%Y-%m-%d %H:%M:%S")
+                    datefmt="%Y-%m-%d %H:%M")
 
 def reply(comment, reply_string):
     new_comment = comment.reply(reply_string)
